@@ -46,6 +46,9 @@
 #define INPUT_SOURCE_NORAML 	100
 #define INPUT_SOURCE_VR 			101
 
+#define HEADPHONE_NO_MIC	0
+#define HEADSET_WITH_MIC	1
+
 #define DEVICE_NAME		"dsp_fm34"
 
 struct i2c_client *fm34_client;
@@ -57,6 +60,8 @@ static int fm34_suspend(struct i2c_client *client, pm_message_t mesg);
 static int fm34_resume(struct i2c_client *client);
 static void fm34_reconfig(void) ;
 extern int hs_micbias_power(int on);
+
+extern int check_hs_type();
 extern bool jack_alive;
 
 static const struct i2c_device_id fm34_id[] = {
@@ -243,7 +248,7 @@ long fm34_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 				case START_RECORDING:
 					gpio_set_value(TEGRA_GPIO_PH3, 1);
 					msleep(10);
-					if(jack_alive){/*Headset mode*/
+					if(jack_alive && check_hs_type()==HEADSET_WITH_MIC){/*Headset mode*/
 						if(PID==101){
 							FM34_INFO("Start recording(AMIC), bypass DSP\n");
 							ret = i2c_master_send(dsp_chip->client, (u8 *)bypass_parameter, sizeof(bypass_parameter));

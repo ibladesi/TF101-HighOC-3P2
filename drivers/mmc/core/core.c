@@ -41,6 +41,7 @@
 #include "sd_ops.h"
 #include "sdio_ops.h"
 
+#include "../host/sdhci.h"
 #include "../debug_mmc.h"
 
 static struct workqueue_struct *workqueue;
@@ -1493,7 +1494,7 @@ void mmc_rescan(struct work_struct *work)
 	int extend_wakelock = 0;
 
        if(host != NULL)
-              MMC_printk("%s: gpio_%d:%d, rescan_disable %d bus_resume_flags %d", mmc_hostname(host), SD_CARD_DETECT, gpio_get_value(SD_CARD_DETECT), host->rescan_disable, host->bus_resume_flags);
+              MMC_printk("%s: gpio_%d:%d, rescan_disable %d bus_resume_flags %d card_present %d", mmc_hostname(host), SD_CARD_DETECT, gpio_get_value(SD_CARD_DETECT), host->rescan_disable, host->bus_resume_flags, ((struct tegra_sdhci_host *)sdhci_priv(mmc_priv(host)))->card_present);
 
 	spin_lock_irqsave(&host->lock, flags);
 
@@ -1843,6 +1844,8 @@ int mmc_pm_notify(struct notifier_block *notify_block,
 	struct mmc_host *host = container_of(
 		notify_block, struct mmc_host, pm_notify);
 	unsigned long flags;
+	struct sdhci_host *sdhost = NULL;
+	struct tegra_sdhci_host *tsdhost = NULL;
 
 	BUG_ON(!host);
 	MMC_printk("%s: mode %d, sd_wake_status 0x%x, bus_resume_flags %d", mmc_hostname(host), mode, sd_wake_status, host->bus_resume_flags);
@@ -1899,11 +1902,16 @@ int mmc_pm_notify(struct notifier_block *notify_block,
 		spin_unlock_irqrestore(&host->lock, flags);
 		if(!strcmp(mmc_hostname(host), SDHOST_STRING))
 		{
-                     if(sd_wake_status == 0x800000)
-                            mmc_detect_change(host, 0);
+			if(sd_wake_status == 0x800000)
+			{
+				sdhost = mmc_priv(host);
+				tsdhost = sdhci_priv(sdhost);
+				tsdhost->card_present = (gpio_get_value(SD_CARD_DETECT) == 0);
+				mmc_detect_change(host, 0);
+			}
 		}
 		else
-                     mmc_detect_change(host, 0);
+			mmc_detect_change(host, 0);
 
 	}
 

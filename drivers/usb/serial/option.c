@@ -65,6 +65,10 @@
 
 #define GPIO_MODEM_WAKEUP TEGRA_GPIO_PQ6
 
+#ifdef CONFIG_DEBUG_ASUS
+extern int logActivate;
+#endif
+
 /* Function prototypes */
 static int  option_probe(struct usb_serial *serial,
 			const struct usb_device_id *id);
@@ -1411,12 +1415,18 @@ static int option_write(struct tty_struct *tty, struct usb_serial_port *port,
 	struct urb *this_urb = NULL; /* spurious */
 	int err;
 	unsigned long flags;
+	int failed_to_usb_autopm_get_interface_async = 0;
 
 	portdata = usb_get_serial_port_data(port);
 	intfdata = port->serial->private;
 
 	dbg("%s: write (%d chars)", __func__, count);
-	//printk(KERN_ERR"fxz-%s: write (%d chars)\n", __func__, count);
+
+#ifdef CONFIG_DEBUG_ASUS
+	if (logActivate > 0) {
+		printk(KERN_INFO"%s()+ write %d chars to ttyUSB%d\n", __func__, count, port->number);
+	}
+#endif
 
 	i = 0;
 	left = count;
@@ -1437,8 +1447,15 @@ static int option_write(struct tty_struct *tty, struct usb_serial_port *port,
 			usb_pipeendpoint(this_urb->pipe), i);
 
 		err = usb_autopm_get_interface_async(port->serial->interface);
-		if (err < 0)
+		if (err < 0) {
+#ifdef CONFIG_DEBUG_ASUS
+			if (logActivate > 0) {
+				printk(KERN_INFO"%s(): Failed to run usb_autopm_get_interface_async(), err = %d\n", __func__, err);
+			}
+#endif
+			failed_to_usb_autopm_get_interface_async = 1;
 			break;
+		}
 
 		/* send the data */
 		memcpy(this_urb->transfer_buffer, buf, todo);
@@ -1446,6 +1463,11 @@ static int option_write(struct tty_struct *tty, struct usb_serial_port *port,
 
 		spin_lock_irqsave(&intfdata->susp_lock, flags);
 		if (intfdata->suspended) {
+#ifdef CONFIG_DEBUG_ASUS
+			if (logActivate > 0) {
+				printk(KERN_INFO"%s(): The device is still suspended.\n", __func__);
+			}
+#endif
 			usb_anchor_urb(this_urb, &portdata->delayed);
 			spin_unlock_irqrestore(&intfdata->susp_lock, flags);
 		} else {
@@ -1453,8 +1475,12 @@ static int option_write(struct tty_struct *tty, struct usb_serial_port *port,
 			spin_unlock_irqrestore(&intfdata->susp_lock, flags);
 			err = usb_submit_urb(this_urb, GFP_ATOMIC);
 			if (err) {
-				dbg("usb_submit_urb %p (write bulk) failed "
-					"(%d)", this_urb, err);
+#ifdef CONFIG_DEBUG_ASUS
+				if (logActivate > 0) {
+					printk(KERN_INFO"%s(): usb_submit_urb %p (write bulk) failed (%d)",__func__, this_urb, err);
+
+				}
+#endif
 				clear_bit(i, &portdata->out_busy);
 				spin_lock_irqsave(&intfdata->susp_lock, flags);
 				intfdata->in_flight--;
@@ -1475,8 +1501,20 @@ static int option_write(struct tty_struct *tty, struct usb_serial_port *port,
 	
 	count -= left;
 	dbg("%s: wrote (did %d)", __func__, count);
-	//printk(KERN_ERR"fxz-%s: wrote (did %d)\n", __func__, count);
-	return count;
+
+#ifdef CONFIG_DEBUG_ASUS
+	if (logActivate > 0) {
+		printk(KERN_INFO"%s()- wrote %d chars to ttyUSB%d\n", __func__, count, port->number);
+	}
+#endif
+
+	if (count == 0 && (failed_to_usb_autopm_get_interface_async == 1 ||
+		(port->serial->dev->descriptor.idVendor == HUAWEI_VENDOR_ID &&
+		port->serial->dev->descriptor.idProduct == HUAWEI_PRODUCT_E1404 &&
+		port->serial->interface->cur_altsetting->desc.bInterfaceNumber == 0x2))) // AT command iface
+		return -EAGAIN;
+	else
+		return count;
 }
 
 static void option_indat_callback(struct urb *urb)

@@ -79,7 +79,7 @@ static const struct tegra_emc_table ventana_emc_tables_elpida_300Mhz[] =  {
 		.rate = 50000,   /* SDRAM frequency */
 		.regs = {
 			0x00000003,   /* RC */
-			0x00000007,   /* RFC */
+			0x00000006,   /* RFC */
 			0x00000003,   /* RAS */
 			0x00000003,   /* RP */
 			0x00000006,   /* R2W */
@@ -129,8 +129,8 @@ static const struct tegra_emc_table ventana_emc_tables_elpida_300Mhz[] =  {
 	{
 		.rate = 75000,   /* SDRAM frequency */
 		.regs = {
-			0x00000005,   /* RC */
-			0x0000000a,   /* RFC */
+			0x00000004,   /* RC */
+			0x00000008,   /* RFC */
 			0x00000004,   /* RAS */
 			0x00000003,   /* RP */
 			0x00000006,   /* R2W */
@@ -180,9 +180,9 @@ static const struct tegra_emc_table ventana_emc_tables_elpida_300Mhz[] =  {
 	{
 		.rate = 150000,   /* SDRAM frequency */
 		.regs = {
-			0x00000009,   /* RC */
-			0x00000012,   /* RFC */
-			0x00000006,   /* RAS */
+			0x00000008,   /* RC */
+			0x00000010,   /* RFC */
+			0x00000005,   /* RAS */
 			0x00000003,   /* RP */
 			0x00000006,   /* R2W */
 			0x00000004,   /* W2R */
@@ -231,9 +231,9 @@ static const struct tegra_emc_table ventana_emc_tables_elpida_300Mhz[] =  {
 	{
 		.rate = 300000,   /* SDRAM frequency */
 		.regs = {
-			0x00000010,   /* RC */
-			0x00000023,   /* RFC */
-			0x0000000b,   /* RAS */
+			0x0000000f,   /* RC */
+			0x00000020,   /* RFC */
+			0x00000009,   /* RAS */
 			0x00000006,   /* RP */
 			0x00000006,   /* R2W */
 			0x00000005,   /* W2R */

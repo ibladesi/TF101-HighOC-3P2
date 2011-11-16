@@ -21,6 +21,18 @@
 #define EN_VDDIO_SD 70
 #define SD_CARD_DETECT 69
 
+struct tegra_sdhci_host {
+	struct sdhci_host *sdhci;
+	struct clk *clk;
+	int clk_enabled;
+	bool card_always_on;
+	u32 sdhci_ints;
+	int wp_gpio;
+	int card_present;
+	int cd_gpio;
+	int cd_gpio_polarity;
+};
+
 struct mmc_ios {
 	unsigned int	clock;			/* clock rate */
 	unsigned short	vdd;

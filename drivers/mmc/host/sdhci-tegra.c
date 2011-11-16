@@ -37,17 +37,6 @@
 #define SDHCI_VENDOR_CLOCK_CNTRL       0x100
 #define is_card_mmc(_card) \
 ((_card) && ((_card)->type == MMC_TYPE_MMC))
-struct tegra_sdhci_host {
-	struct sdhci_host *sdhci;
-	struct clk *clk;
-	int clk_enabled;
-	bool card_always_on;
-	u32 sdhci_ints;
-	int wp_gpio;
-	int card_present;
-	int cd_gpio;
-	int cd_gpio_polarity;
-};
 
 static irqreturn_t carddetect_irq(int irq, void *data)
 {

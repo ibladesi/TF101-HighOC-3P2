@@ -97,7 +97,7 @@ static struct kobj_attribute _name##_attr = {   \
 #define LOG_DETECT                     "log_detect"
 #define STR_TURN_ON                    "on"
 #define STR_TURN_OFF                   "off"
-static int logActivate;
+int logActivate;
 static struct kobject *log_kobj;
 #endif /*def CONFIG_DEBUG_ASUS*/
 /* Bits in rbits */
