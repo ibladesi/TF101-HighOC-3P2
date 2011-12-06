@@ -1,9 +1,9 @@
-/* This file is auto generated, version 44 */
+/* This file is auto generated, version 54 */
 /* SMP PREEMPT */
 #define UTS_MACHINE "arm"
-#define UTS_VERSION "#44 SMP PREEMPT Sat Oct 1 05:40:19 EDT 2011"
-#define LINUX_COMPILE_TIME "05:40:19"
+#define UTS_VERSION "#54 SMP PREEMPT Tue Dec 6 01:20:27 EST 2011"
+#define LINUX_COMPILE_TIME "01:20:27"
 #define LINUX_COMPILE_BY "edward"
-#define LINUX_COMPILE_HOST "LinuxHP"
+#define LINUX_COMPILE_HOST "LinuxRaidX64"
 #define LINUX_COMPILE_DOMAIN "(none)"
-#define LINUX_COMPILER "gcc version 4.5.2 (Ubuntu/Linaro 4.5.2-8ubuntu3) "
+#define LINUX_COMPILER "gcc version 4.6.1 (Ubuntu/Linaro 4.6.1-9ubuntu3) "

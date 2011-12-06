@@ -34,7 +34,7 @@ static const struct tegra_emc_table ventana_emc_tables_elpida_300Mhz[] =  {
 			0x00000006,   /* R2W */
 			0x00000004,   /* W2R */
 			0x00000002,   /* R2P */
-			0x00000009,   /* W2P */
+			0x00000008,   /* W2P */
 			0x00000003,   /* RD_RCD */
 			0x00000003,   /* WR_RCD */
 			0x00000002,   /* RRD */
@@ -85,7 +85,7 @@ static const struct tegra_emc_table ventana_emc_tables_elpida_300Mhz[] =  {
 			0x00000006,   /* R2W */
 			0x00000004,   /* W2R */
 			0x00000002,   /* R2P */
-			0x00000009,   /* W2P */
+			0x00000008,   /* W2P */
 			0x00000003,   /* RD_RCD */
 			0x00000003,   /* WR_RCD */
 			0x00000002,   /* RRD */
@@ -136,7 +136,7 @@ static const struct tegra_emc_table ventana_emc_tables_elpida_300Mhz[] =  {
 			0x00000006,   /* R2W */
 			0x00000004,   /* W2R */
 			0x00000002,   /* R2P */
-			0x00000009,   /* W2P */
+			0x00000008,   /* W2P */
 			0x00000003,   /* RD_RCD */
 			0x00000003,   /* WR_RCD */
 			0x00000002,   /* RRD */
@@ -180,14 +180,14 @@ static const struct tegra_emc_table ventana_emc_tables_elpida_300Mhz[] =  {
 	{
 		.rate = 150000,   /* SDRAM frequency */
 		.regs = {
-			0x00000008,   /* RC */
-			0x00000010,   /* RFC */
+			0x00000007,   /* RC */
+			0x0000000f,   /* RFC */
 			0x00000005,   /* RAS */
 			0x00000003,   /* RP */
 			0x00000006,   /* R2W */
 			0x00000004,   /* W2R */
 			0x00000002,   /* R2P */
-			0x00000009,   /* W2P */
+			0x00000008,   /* W2P */
 			0x00000003,   /* RD_RCD */
 			0x00000003,   /* WR_RCD */
 			0x00000002,   /* RRD */
@@ -232,7 +232,7 @@ static const struct tegra_emc_table ventana_emc_tables_elpida_300Mhz[] =  {
 		.rate = 300000,   /* SDRAM frequency */
 		.regs = {
 			0x0000000f,   /* RC */
-			0x00000020,   /* RFC */
+			0x0000001e,   /* RFC */
 			0x00000009,   /* RAS */
 			0x00000006,   /* RP */
 			0x00000006,   /* R2W */
@@ -241,8 +241,8 @@ static const struct tegra_emc_table ventana_emc_tables_elpida_300Mhz[] =  {
 			0x00000009,   /* W2P */
 			0x00000006,   /* RD_RCD */
 			0x00000006,   /* WR_RCD */
-			0x00000003,   /* RRD */
-			0x00000003,   /* REXT */
+			0x00000002,   /* RRD */
+			0x00000002,   /* REXT */
 			0x00000002,   /* WDV */
 			0x00000006,   /* QUSE */
 			0x00000003,   /* QRST */

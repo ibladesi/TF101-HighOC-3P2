@@ -17,4 +17,4 @@ ifeq ($(CONFIG_JOYSTICK_IFORCE_USB),y)
 	iforce-objs += iforce-usb.o
 endif
 
-EXTRA_CFLAGS = -Werror-implicit-function-declaration
+EXTRA_CFLAGS = 

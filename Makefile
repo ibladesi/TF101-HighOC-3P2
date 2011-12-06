@@ -331,11 +331,11 @@ CHECK		= sparse
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
-CFLAGS_MODULE   = -mtune=cortex-a9 -mfpu=vfpv3-d16 -ftree-vectorize
+CFLAGS_MODULE   = -mtune=cortex-a9 -mfpu=vfpv3-d16 -ftree-vectorize -ffast-math -fsingle-precision-constant
 CFLAGS_MODULE   += $(call cc-option,-mfloat-abi=softfp)
 AFLAGS_MODULE   =
 LDFLAGS_MODULE  =
-CFLAGS_KERNEL	= -mtune=cortex-a9 -mfpu=vfpv3-d16 -ftree-vectorize
+CFLAGS_KERNEL	= -mtune=cortex-a9 -mfpu=vfpv3-d16 -ftree-vectorize -ffast-math -fsingle-precision-constant
 CFLAGS_KERNEL   += $(call cc-option,-mfloat-abi=softfp)
 AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
@@ -350,9 +350,8 @@ LINUXINCLUDE    := -I$(srctree)/arch/$(hdr-arch)/include -Iinclude \
 
 KBUILD_CPPFLAGS := -D__KERNEL__
 
-KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+KBUILD_CFLAGS   := -Wno-error -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
-		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -fno-delete-null-pointer-checks
 KBUILD_AFLAGS_KERNEL :=
